@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>title</title>
+    <script src="vue.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div id="app">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">商品列表</h3>
+        </div>
+        <div class="panel-body form-inline">
+            <label>
+                id:
+                <input type="text" class="form-control" v-model="id">
+            </label>
+            <label>
+                name:
+                <input type="text" class="form-control" v-model="name" @keyup.enter="add">
+            </label>
+            <input type="button" value="添加" class="btn btn-primary" @click="add">
+            <label>
+                请输入搜索的关键字:
+                <input type="text" class="form-control" v-model="keywords" id="search">
+            </label>
+        </div>
+    </div>
+    <table class="table table-bordered table-hover ">
+        <thead>
+        <tr>
+            <th>id</th>
+            <th>name</th>
+            <th>ctime</th>
+            <th>operation</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="item in search(keywords)" :key="item.id">
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.stime | dateFormat}}</td>
+            <td><a href="" @click.prevent="del(item.id)">删除</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+<script>
+    Vue.filter('dateFormat',function (datastr) {
+        var dt=new  Date(datastr);
+        var y=dt.getFullYear();
+        var m=dt.getMonth()+1;
+        var d=dt.getDate();
+        return  `${y}-${m}-${d}`;    });
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            id:"",
+            name:"",
+            keywords:"",
+            list:[
+                {id:1,name:"奔驰",stime:new Date()},
+                {id:2,name:"宝马",stime:new Date()},
+            ]
+         },
+        methods:{
+            add(){
+                var car={id:this.id,name:this.name,stime:new Date()};
+                this.list.push(car);
+                this.id=this.name="";
+            },
+            del(id){
+                this.list.some((item,i)=>{
+                    if (item.id==id){
+                        this.list.splice(i,1);
+                        return true;
+                    }
+                })
+            },
+            search(keywords){
+                var newlist=[];
+                this.list.forEach(item=>{
+                    if (item.name.indexOf(keywords)!=-1){
+                        newlist.push(item);
+                    }
+                })
+                return newlist;
+            }
+
+        }
+    })
+
+</script>
+</html>

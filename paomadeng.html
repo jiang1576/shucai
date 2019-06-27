@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+</head>
+<body>
+<div id="app">
+    <input type="button" value="开始" v-on:click="lang">
+    <input type="button" value="停止" @click="stopinterval">
+    <h4>{{mag}}</h4>
+</div>
+</body>
+<script>
+    var vm=new Vue({
+        el:'#app',
+        data:{
+            mag:"这是一个跑马灯的效果---------",
+            intervalid:null
+        },
+        methods:{
+            //设置定时器，每次将字符中的第一个字符拼接到字符的后面
+            lang:function(){
+                if (this.intervalid==null) {
+                    this.intervalid=setInterval(() => {
+                        //箭头函数作用使函数内部的this永远指向函数外部的this
+                        var start = this.mag.substring(0, 1);
+                        var end = this.mag.substring(1);
+                        this.mag = end + start;
+                    }, 200)
+                }
+                else {
+                    return;
+                }
+            },
+            stopinterval:function () {
+                clearInterval(this.intervalid);
+                this.intervalid=null;
+            }
+        }
+    })
+</script>
+</html>

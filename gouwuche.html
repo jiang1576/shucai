@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="vue.js"></script>
+</head>
+<style>
+    .ball{
+        width: 15px;
+        height: 15px;
+        border-radius: 50%;
+        background-color: red;
+    }
+</style>
+<body>
+<div id="app">
+    <input type="button" value="添加购物车" @click="flag=!flag">
+    <transition @before-enter="beforeenter" @enter="enter" @after-enter="afterenter">
+        <div class="ball" v-show="flag"></div>
+    </transition>
+</div>
+
+</body>
+<script>
+    var vm=new Vue({
+        el:"#app",
+        data:{
+            flag:false,
+
+        },
+        methods:{
+          beforeenter(el){
+          //    el表示动画要操作的那个dom元素，beforeenter设置动画起始的状态
+              el.style.transform="translate(0,0)";
+
+          },
+          enter(el,done){
+              //小球运功结束时的状态
+              el.offsetWidth;
+              el.style.transform="translate(150px,450px)";
+              el.style.transition='all 1s ease';
+              done();
+          //    done为afterenter函数的引用
+          },
+          afterenter(el){
+          //    动画结束时运行
+               this.flag=!this.flag;
+          }
+        }
+
+    })
+</script>
+
+</html>

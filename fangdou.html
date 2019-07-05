@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    div{
+        height: 5000px;
+        background-color: red;
+    }
+</style>
+<script>
+    function throttle(fn,delay) {
+        var timer=null;
+        return function () {
+            clearTimeout(timer);
+            timer=setTimeout(function () {
+                fn();
+
+            },delay)
+        }
+    }
+    document.onscroll=throttle(()=>{console.log('scroll事件被触发了'+Date.now());},2000);
+</script>
+<body>
+<div></div>
+</body>
+</html>
